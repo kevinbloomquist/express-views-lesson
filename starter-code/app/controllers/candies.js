@@ -1,10 +1,26 @@
 var Candy = require('../models/Candy');
 
 // GET
-
+function getAll(request, response) {
+  Candy.find(function(error, candies) {
+    if (error) response.render('Error finding candy');
+    console.log("Rendering candies");
+    console.log(candies);
+    response.render('layout', {candies:candies});
+  });
+}
 
 // POST
+function createCandy(request, response) {
+  var candy = new Candy();
+  candy.name = request.body.name;
+  candy.color = request.body.color;
 
+  candy.save(function(error) {
+    if(error) {response.render("Error saving candy");}
+    response.redirect('/candies');
+  });
+}
 
 // GET
 function getCandy(request, response) {
